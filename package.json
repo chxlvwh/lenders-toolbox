@@ -6,18 +6,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "eslint \"{pages,styles,components,utils,contants}/**/*.@(tsx|ts)\" --fix",
+    "build-css": "node-sass ./styles/index.module.sass ./dist/index.css --watch"
   },
   "dependencies": {
     "@next/font": "13.1.6",
     "@types/node": "18.13.0",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
+    "antd": "^5.2.0",
+    "currency.js": "^2.0.4",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "4.9.5"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "node-sass": "^7.0.3",
+    "prettier": "^2.8.4",
+    "sass": "^1.58.0"
   }
 }
