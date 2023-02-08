@@ -9,6 +9,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import HeaderPage from '../Header/HeaderPage';
 import HeaderDesc from '../Header/HeaderDesc';
 import Link from 'next/link';
+import styles from '@/styles/index.module.sass';
 
 export type PreRepayProps = {
   prepayDate: dayjs.Dayjs;
@@ -96,7 +97,7 @@ const SearchForm: React.FC = () => {
       <HeaderDesc />
       <Form
         form={form}
-        className="search-form-wrapper"
+        className={styles['search-form-wrapper']}
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 8 }}
         layout="horizontal"
