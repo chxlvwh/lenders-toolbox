@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "eslint \"{pages,styles,components,utils,contants}/**/*.@(tsx|ts)\" --fix",
-    "build-css": "node-sass ./styles/index.module.sass ./dist/index.css --watch"
+    "lint:fix": "eslint \"{pages,styles,components,utils,contants}/**/*.@(tsx|ts)\" --fix"
   },
   "dependencies": {
     "@next/font": "13.1.6",

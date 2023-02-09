@@ -2,6 +2,7 @@ import { IFormProps } from '@/components/SearchForm/SearchForm';
 import currency from 'currency.js';
 import dayjs from 'dayjs';
 import { Loan } from '@/utils/Loan';
+import styles from '@/styles/index.module.sass';
 
 export type element = { before: number; after: number };
 export interface ILoanDetailElement {
@@ -154,13 +155,13 @@ export const getBeforePreRepayTableColumns = () => {
     {
       title: 'name',
       dataIndex: 'name',
-      className: 'table-col-sty',
+      className: styles['table-col-sty'],
       width: '50%',
       onCell(record: any) {
         if (record.name === '节省利息') {
           return {
             ...record,
-            className: 'danger'
+            className: styles['danger']
           };
         }
       }

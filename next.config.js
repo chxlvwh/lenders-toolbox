@@ -5,6 +5,15 @@ const nextConfig = {
   output: 'standalone',
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/pre-repay',
+        permanent: true
+      }
+    ];
   }
 };
 
