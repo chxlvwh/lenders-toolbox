@@ -80,27 +80,63 @@ export const getLoanDetailTableColumns = () => {
   return [
     {
       title: '期次',
-      dataIndex: 'term'
+      dataIndex: 'term',
+      onCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
+      }
     },
     {
       title: '还款日期',
-      dataIndex: 'date'
+      dataIndex: 'date',
+      onCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
+      }
     },
     {
       title: '每月还款',
-      dataIndex: 'amount'
+      dataIndex: 'amount',
+      onCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
+      }
     },
     {
       title: '偿还利息',
-      dataIndex: 'interest'
+      dataIndex: 'interest',
+      onCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
+      }
     },
     {
       title: '偿还本金',
-      dataIndex: 'seed'
+      dataIndex: 'seed',
+      onCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
+      }
     },
     {
       title: '剩余本金',
-      dataIndex: 'restSeed'
+      dataIndex: 'restSeed',
+      onCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
+      }
     }
   ];
 };
@@ -169,7 +205,13 @@ export const getBeforePreRepayTableColumns = () => {
     {
       title: 'value',
       dataIndex: 'value',
-      width: '50%'
+      width: '50%',
+      onCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
+      }
     }
   ];
 };
