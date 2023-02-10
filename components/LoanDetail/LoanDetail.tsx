@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Table, Typography } from 'antd';
 import { getLoanDetailTableColumns, getLoanDetailTableData, getPreRepayInfo, ILoanDetailElement } from '@/contants';
+import styles from '@/styles/index.module.sass';
 
 const LoanDetail: FC = () => {
   const [tableList, setTableList] = useState<ILoanDetailElement[][]>([]);
@@ -16,7 +17,7 @@ const LoanDetail: FC = () => {
             <div key={index}>
               <Table
                 key={index}
-                className="loan-detail-table"
+                className={styles['loan-detail-table']}
                 bordered={true}
                 columns={getLoanDetailTableColumns()}
                 dataSource={item}

@@ -9,6 +9,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import HeaderPage from '../Header/HeaderPage';
 import HeaderDesc from '../Header/HeaderDesc';
 import Link from 'next/link';
+import styles from '@/styles/index.module.sass';
 
 export type PreRepayProps = {
   prepayDate: dayjs.Dayjs;
@@ -96,34 +97,38 @@ const SearchForm: React.FC = () => {
       <HeaderDesc />
       <Form
         form={form}
-        className="search-form-wrapper"
+        className={styles['search-form-wrapper']}
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 8 }}
         layout="horizontal"
         initialValues={initialValues}>
-        <Form.Item label="贷款金额：" name="loanAmount">
+        <Form.Item className={styles['custom-form-item']} label="贷款金额：" name="loanAmount">
           <InputNumber addonAfter="元" controls={false} style={{ width: '400px' }} />
         </Form.Item>
-        <Form.Item label="贷款期限：" name="loanYearTerm">
+        <Form.Item className={styles['custom-form-item']} label="贷款期限：" name="loanYearTerm">
           <Select options={loanTermOptions} />
         </Form.Item>
-        <Form.Item label="贷款月数：" name="loanMonthTerm">
+        <Form.Item className={styles['custom-form-item']} label="贷款月数：" name="loanMonthTerm">
           <InputNumber addonAfter="月" controls={false} style={{ width: '400px' }} />
         </Form.Item>
-        <Form.Item label="还款方式：" name="loanType">
+        <Form.Item className={styles['custom-form-item']} label="还款方式：" name="loanType">
           <Select options={loanTypes} />
         </Form.Item>
-        <Form.Item label="贷款利率：" name="rates">
+        <Form.Item className={styles['custom-form-item']} label="贷款利率：" name="rates">
           <InputNumber addonAfter="%" controls={false} style={{ width: '400px' }} />
         </Form.Item>
-        <Form.Item label="首次还款日期：" name="firstRepayDate">
+        <Form.Item className={styles['custom-form-item']} label="首次还款日期：" name="firstRepayDate">
           <DatePicker style={{ width: '400px' }} picker="month" />
         </Form.Item>
         <Form.List name="preRepayList">
           {(fields, { add, remove }) => (
             <>
               {fields.map((field, index) => (
-                <Space key={field.key} align="baseline" style={{ textAlign: 'left' }}>
+                <Space
+                  key={field.key}
+                  align="baseline"
+                  style={{ textAlign: 'left' }}
+                  className={styles['custom-space']}>
                   <Card title={`第${index + 1}次还款计划`} size="small">
                     <Form.Item label="提前还款日期：" name={[field.name, 'prepayDate']}>
                       <DatePicker picker="month" />
@@ -148,7 +153,11 @@ const SearchForm: React.FC = () => {
                     </Form.Item>
                   </Card>
 
-                  {index !== 0 && <MinusCircleOutlined onClick={() => remove(field.name)} />}
+                  <MinusCircleOutlined
+                    onClick={() => {
+                      return index === 0 ? null : remove(field.name);
+                    }}
+                  />
                 </Space>
               ))}
 
@@ -157,7 +166,7 @@ const SearchForm: React.FC = () => {
                   计算
                 </Button>
 
-                <Link href="/pre-loan/detail" target="_blank">
+                <Link href="/pre-repay/detail" target="_blank">
                   <Button
                     size="large"
                     type="primary"
@@ -177,6 +186,7 @@ const SearchForm: React.FC = () => {
                 <FloatButton
                   shape="circle"
                   type="primary"
+                  className={styles['float-btn-circle']}
                   onClick={() => add(form.getFieldValue('preRepayList')[0])}
                   style={{ top: 100, right: 94 }}
                   icon={<PlusOutlined />}
