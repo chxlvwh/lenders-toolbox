@@ -255,7 +255,7 @@ export const getPreRepayTableData = (formValue: IFormProps, index: number): Loan
     {
       key: '5',
       name: '剩余本金',
-      value: `${currency(loan.restSeedList[index].after)} 元`
+      value: `${currency(loan.restSeedList[index].after + formValue.preRepayList[index].prepayAmount)} 元`
     },
     {
       key: '6',
@@ -288,7 +288,7 @@ export const getAfterPreRepayTableData = (formValue: IFormProps, index: number):
     {
       key: '1',
       name: '贷款金额',
-      value: `${currency(loan.restSeedList[index].after - formValue.preRepayList[index].prepayAmount)} 元`
+      value: `${currency(loan.restSeedList[index].after)} 元`
     },
     {
       key: '2',
