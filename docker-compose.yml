@@ -1,0 +1,11 @@
+version: "1"
+
+services:
+  lenders-toolbox:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/lenders-toolbox
