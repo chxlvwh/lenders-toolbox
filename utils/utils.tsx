@@ -44,7 +44,7 @@ export const calMonthObj = (
       restSeed
     });
   });
-  // localStorage.setItem('loan_detail_List', JSON.stringify(detailList));
+  // sessionStorage.setItem('loan_detail_List', JSON.stringify(detailList));
   return {
     monthSeed,
     monthInterest,

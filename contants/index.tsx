@@ -144,7 +144,7 @@ export const getLoanDetailTableColumns = () => {
 export const getLoanDetailTableData = (): ILoanDetailElement[][] => {
   let list: ILoanDetailElement[][] = [];
   if (typeof window !== 'undefined') {
-    list = JSON.parse(localStorage.getItem('loan_detail_List') || '[]');
+    list = JSON.parse(sessionStorage.getItem('loan_detail_List') || '[]');
   }
   return list.map((it: ILoanDetailElement[], index: number): ILoanDetailElement[] => {
     let prevLength = 0;
@@ -177,7 +177,7 @@ type preRepayInfo = {
 export const getPreRepayInfo = (): preRepayInfo[] => {
   try {
     if (typeof window !== 'undefined') {
-      return JSON.parse(localStorage.getItem('rest_seed_list') || '[]');
+      return JSON.parse(sessionStorage.getItem('rest_seed_list') || '[]');
     }
     return [];
   } catch (e) {

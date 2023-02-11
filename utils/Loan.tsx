@@ -171,9 +171,9 @@ export class Loan {
       );
     }
 
-    localStorage.setItem('loan_detail_List', JSON.stringify(this.detailList));
+    sessionStorage.setItem('loan_detail_List', JSON.stringify(this.detailList));
 
-    localStorage.setItem(
+    sessionStorage.setItem(
       'rest_seed_list',
       JSON.stringify(
         this.restSeedList.map((it, index) => {
