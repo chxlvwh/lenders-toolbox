@@ -41,5 +41,5 @@ const prodInitState = {
   ]
 };
 export const getInitialValues = () => {
-  return process.env.NODE_ENV !== 'development' ? devInitState : prodInitState;
+  return process.env.NODE_ENV === 'development' ? devInitState : prodInitState;
 };
