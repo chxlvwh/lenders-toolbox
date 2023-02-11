@@ -120,25 +120,46 @@ const SearchForm: React.FC = () => {
                   style={{ textAlign: 'left' }}
                   className={styles['custom-space']}>
                   <Card title={`第${index + 1}次还款计划`} size="small">
-                    <Form.Item label="提前还款日期：" name={[field.name, 'prepayDate']}>
+                    <Form.Item
+                      className={styles['custom-form-item']}
+                      label="提前还款日期："
+                      name={[field.name, 'prepayDate']}>
                       <DatePicker picker="month" />
                     </Form.Item>
-                    <Form.Item label="提前还款方式：" name={[field.name, 'preRepayType']}>
+                    <Form.Item
+                      className={styles['custom-form-item']}
+                      label="提前还款方式："
+                      name={[field.name, 'preRepayType']}>
                       <Select options={preLoanTypes} />
                     </Form.Item>
-                    <Form.Item label="提前还款金额：" name={[field.name, 'prepayAmount']}>
+                    <Form.Item
+                      className={styles['custom-form-item']}
+                      label="提前还款金额："
+                      name={[field.name, 'prepayAmount']}>
                       <Input suffix="元" />
                     </Form.Item>
-                    <Form.Item label="新的贷款利率：" name={[field.name, 'newRates']}>
+                    <Form.Item
+                      className={styles['custom-form-item']}
+                      label="新的贷款利率："
+                      name={[field.name, 'newRates']}>
                       <Input suffix="%" />
                     </Form.Item>
-                    <Form.Item label="新的还款方式：" name={[field.name, 'newRepayType']}>
+                    <Form.Item
+                      className={styles['custom-form-item']}
+                      label="新的还款方式："
+                      name={[field.name, 'newRepayType']}>
                       <Select options={loanTypes} />
                     </Form.Item>
-                    <Form.Item label="调整还款方案：" name={[field.name, 'repayPlan']}>
+                    <Form.Item
+                      className={styles['custom-form-item']}
+                      label="调整还款方案："
+                      name={[field.name, 'repayPlan']}>
                       <Select options={repayPlans} />
                     </Form.Item>
-                    <Form.Item label="新的月供金额：" name={[field.name, 'newMonthlyAmount']}>
+                    <Form.Item
+                      className={styles['custom-form-item']}
+                      label="新的月供金额："
+                      name={[field.name, 'newMonthlyAmount']}>
                       <Input suffix="元" />
                     </Form.Item>
                   </Card>
@@ -175,7 +196,6 @@ const SearchForm: React.FC = () => {
                   type="primary"
                   className={styles['float-btn-circle']}
                   onClick={() => add(form.getFieldValue('preRepayList')[0])}
-                  style={{ top: 100, right: 94 }}
                   icon={<PlusOutlined />}
                 />
               </Tooltip>

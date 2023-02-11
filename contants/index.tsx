@@ -332,8 +332,7 @@ export const getPreRepayTableData = (formValue: IFormProps, index: number): Loan
     {
       key: '2',
       name: '已还利息',
-      value: `上次提前还款之后：${currency(loan.repaidInterestList[index])} 元，
-				总计已还：${currency(loan.getTotalRepaidInterest(index))} 元`
+      value: `${currency(loan.repaidInterestList[index])}/${currency(loan.getTotalRepaidInterest(index))} 元`
     },
     {
       key: '3',
@@ -343,8 +342,7 @@ export const getPreRepayTableData = (formValue: IFormProps, index: number): Loan
     {
       key: '4',
       name: '已还本金',
-      value: `上次提前还款之后：${currency(loan.repaidSeedList[index])} 元，
-				总计已还：${currency(loan.getTotalRepaidSeed(index))} 元`
+      value: `${currency(loan.repaidSeedList[index])} 元/${currency(loan.getTotalRepaidSeed(index))} 元`
     },
     {
       key: '5',
@@ -387,9 +385,9 @@ export const getAfterPreRepayTableData = (formValue: IFormProps, index: number):
     {
       key: '2',
       name: '贷款期限',
-      value: `${loan.termList[index].after} 月，最后还款日：${dayjs(formValue.preRepayList[index].prepayDate)
+      value: `${loan.termList[index].after} 月，${dayjs(formValue.preRepayList[index].prepayDate)
         .add(loan.termList[index].after, 'month')
-        .format(DateFormat.YM)}`
+        .format(DateFormat.YM)} 到期`
     },
     {
       key: '3',
