@@ -62,7 +62,7 @@ const SearchForm: React.FC = () => {
     if (router.query.prepayDate) {
       const query = queryString.parse(queryString.stringify(router.query)) as RouterQueryProps;
       // 计算数据
-      setFormValues(queryToFormValues(query));
+      // setFormValues(queryToFormValues(query));
       // 控制页面中form值的显示
       form.setFieldsValue(queryToFormValues(query));
     }
