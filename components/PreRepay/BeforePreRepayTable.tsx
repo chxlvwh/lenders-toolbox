@@ -1,9 +1,8 @@
 import React from 'react';
 import { Table, Typography } from 'antd';
-import { getBeforePreRepayTableColumns, getBeforePreRepayTableData } from '@/contants';
-import { IFormProps } from '../SearchForm/SearchForm';
+import { getBeforePreRepayTableColumns, LoanTableColumns } from '@/contants';
 
-const BeforePreRepayTable = ({ formValues }: { formValues: IFormProps }) => {
+const BeforePreRepayTable = ({ tableData }: { tableData: LoanTableColumns[] }) => {
   return (
     <>
       <Typography.Title level={4}>提前还款前</Typography.Title>
@@ -12,7 +11,7 @@ const BeforePreRepayTable = ({ formValues }: { formValues: IFormProps }) => {
         size={'small'}
         showHeader={false}
         columns={getBeforePreRepayTableColumns()}
-        dataSource={getBeforePreRepayTableData(formValues)}
+        dataSource={tableData}
         pagination={false}
       />
     </>

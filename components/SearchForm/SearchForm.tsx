@@ -14,7 +14,16 @@ import {
   Space,
   Tooltip
 } from 'antd';
-import { loanTermOptions, loanTypes, preLoanTypes, repayPlans } from '@/contants';
+import {
+  getAfterPreRepayTableData,
+  getBeforePreRepayTableData,
+  getPreRepayTableData,
+  LoanTableColumns,
+  loanTermOptions,
+  loanTypes,
+  preLoanTypes,
+  repayPlans
+} from '@/contants';
 import dayjs from 'dayjs';
 import BeforePreRepayTable from '../PreRepay/BeforePreRepayTable';
 import PreRepayTable from '../PreRepay/PreRepayTable';
@@ -53,6 +62,10 @@ const SearchForm: React.FC = () => {
   const router = useRouter();
   const initialValues: IFormProps = getInitialValues();
   const [formValues, setFormValues] = useState<IFormProps>(initialValues);
+  const [disableTerm, setDisableTerm] = useState<boolean>(false);
+  const [beforePreRepayTableData, setBeforePreRepayTableData] = useState<LoanTableColumns[]>([]);
+  const [afterPreRepayTableData, setAfterPreRepayTableData] = useState<LoanTableColumns[]>([]);
+  const [preRepayTableData, setPreRepayTableData] = useState<LoanTableColumns[]>([]);
   const onCheck = async () => {
     try {
       const values = await form.validateFields();
@@ -67,8 +80,22 @@ const SearchForm: React.FC = () => {
         return;
       await router.push(`${router.pathname}?${formValuesToQueryString(values)}`);
       setFormValues(values);
+      setBeforePreRepayTableData(getBeforePreRepayTableData(values));
+      values.preRepayList.forEach((item, index) => {
+        setAfterPreRepayTableData(getAfterPreRepayTableData(values, index));
+        setPreRepayTableData(getPreRepayTableData(values, index));
+      });
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
+    }
+  };
+  const handleTermChange = async () => {
+    const loanYearTerm = await form.getFieldValue('loanYearTerm');
+    setDisableTerm(loanYearTerm !== 0);
+    if (loanYearTerm !== 0) {
+      // setFormValues({ ...formValues, loanMonthTerm: loanYearTerm * 12 });
+      form.setFieldValue('loanMonthTerm', loanYearTerm * 12);
+      console.log(loanYearTerm * 12);
     }
   };
 
@@ -80,6 +107,7 @@ const SearchForm: React.FC = () => {
       // 控制页面中form值的显示
       form.setFieldsValue(queryToFormValues(query));
     }
+    handleTermChange();
   }, [form, router.query]);
   return (
     <>
@@ -96,10 +124,10 @@ const SearchForm: React.FC = () => {
           <InputNumber addonAfter="元" controls={false} style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item className={styles['custom-form-item']} label="贷款期限：" name="loanYearTerm">
-          <Select options={loanTermOptions} />
+          <Select options={loanTermOptions} onChange={handleTermChange} />
         </Form.Item>
         <Form.Item className={styles['custom-form-item']} label="贷款月数：" name="loanMonthTerm">
-          <InputNumber addonAfter="月" controls={false} style={{ width: '100%' }} />
+          <InputNumber disabled={disableTerm} addonAfter="月" controls={false} style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item className={styles['custom-form-item']} label="还款方式：" name="loanType">
           <Select options={loanTypes} />
@@ -203,15 +231,15 @@ const SearchForm: React.FC = () => {
           )}
         </Form.List>
       </Form>
-      {formValues.loanAmount !== 0 && <BeforePreRepayTable formValues={formValues} />}
+      {formValues.loanAmount !== 0 && <BeforePreRepayTable tableData={beforePreRepayTableData} />}
       {formValues.loanAmount !== 0 &&
         formValues.preRepayList.map((val, index) => {
           return (
             <div key={index}>
               <Divider />
-              <PreRepayTable formValues={formValues} index={index} />
+              <PreRepayTable tableData={preRepayTableData} formValues={formValues} index={index} />
               <Divider />
-              <AfterPreRepayTable formValues={formValues} index={index} />
+              <AfterPreRepayTable tableData={afterPreRepayTableData} index={index} />
             </div>
           );
         })}
