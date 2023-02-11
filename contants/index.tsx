@@ -99,12 +99,24 @@ export const getLoanDetailTableColumns = () => {
           ...record,
           className: styles['money-style']
         };
+      },
+      onHeaderCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
       }
     },
     {
       title: '还款日期',
       dataIndex: 'date',
       onCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
+      },
+      onHeaderCell(record: any) {
         return {
           ...record,
           className: styles['money-style']
@@ -119,12 +131,24 @@ export const getLoanDetailTableColumns = () => {
           ...record,
           className: styles['money-style']
         };
+      },
+      onHeaderCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
       }
     },
     {
       title: '偿还利息',
       dataIndex: 'interest',
       onCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
+      },
+      onHeaderCell(record: any) {
         return {
           ...record,
           className: styles['money-style']
@@ -139,12 +163,24 @@ export const getLoanDetailTableColumns = () => {
           ...record,
           className: styles['money-style']
         };
+      },
+      onHeaderCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
       }
     },
     {
       title: '剩余本金',
       dataIndex: 'restSeed',
       onCell(record: any) {
+        return {
+          ...record,
+          className: styles['money-style']
+        };
+      },
+      onHeaderCell(record: any) {
         return {
           ...record,
           className: styles['money-style']

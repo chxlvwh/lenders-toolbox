@@ -1,5 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, DatePicker, Divider, FloatButton, Form, Input, InputNumber, Select, Space, Tooltip } from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  DatePicker,
+  Divider,
+  FloatButton,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Select,
+  Space,
+  Tooltip
+} from 'antd';
 import { loanTermOptions, loanTypes, preLoanTypes, repayPlans } from '@/contants';
 import dayjs from 'dayjs';
 import BeforePreRepayTable from '../PreRepay/BeforePreRepayTable';
@@ -79,22 +93,22 @@ const SearchForm: React.FC = () => {
         layout="horizontal"
         initialValues={initialValues}>
         <Form.Item className={styles['custom-form-item']} label="贷款金额：" name="loanAmount">
-          <InputNumber addonAfter="元" controls={false} style={{ width: '400px' }} />
+          <InputNumber addonAfter="元" controls={false} style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item className={styles['custom-form-item']} label="贷款期限：" name="loanYearTerm">
           <Select options={loanTermOptions} />
         </Form.Item>
         <Form.Item className={styles['custom-form-item']} label="贷款月数：" name="loanMonthTerm">
-          <InputNumber addonAfter="月" controls={false} style={{ width: '400px' }} />
+          <InputNumber addonAfter="月" controls={false} style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item className={styles['custom-form-item']} label="还款方式：" name="loanType">
           <Select options={loanTypes} />
         </Form.Item>
         <Form.Item className={styles['custom-form-item']} label="贷款利率：" name="rates">
-          <InputNumber addonAfter="%" controls={false} style={{ width: '400px' }} />
+          <InputNumber addonAfter="%" controls={false} style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item className={styles['custom-form-item']} label="首次还款日期：" name="firstRepayDate">
-          <DatePicker style={{ width: '400px' }} picker="month" />
+          <DatePicker style={{ width: '100%' }} picker="month" />
         </Form.Item>
         <Form.List name="preRepayList">
           {(fields, { add, remove }) => (
@@ -138,23 +152,21 @@ const SearchForm: React.FC = () => {
               ))}
 
               <Form.Item wrapperCol={{ offset: 0 }}>
-                <Button size="large" type="primary" onClick={onCheck} block style={{ width: '400px' }}>
-                  计算
-                </Button>
+                <Row gutter={24}>
+                  <Col className="gutter-row" span={12}>
+                    <Button size="large" type="primary" onClick={onCheck} block>
+                      计算
+                    </Button>
+                  </Col>
 
-                <Link href={`/pre-repay/detail?${queryString.stringify(router.query)}`} target="_blank">
-                  <Button
-                    size="large"
-                    type="primary"
-                    block
-                    danger
-                    style={{
-                      width: '400px',
-                      margin: '20px'
-                    }}>
-                    查看每月还款明细
-                  </Button>
-                </Link>
+                  <Col className="gutter-row" span={12}>
+                    <Link href={`/pre-repay/detail?${queryString.stringify(router.query)}`} target="_blank">
+                      <Button size="large" type="primary" block danger>
+                        查看每月还款明细
+                      </Button>
+                    </Link>
+                  </Col>
+                </Row>
               </Form.Item>
 
               <Tooltip title="添加提前还款计划">

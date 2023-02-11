@@ -35,11 +35,12 @@ const LoanDetail: FC = () => {
               />
               {index + 1 < tableList.length && preRepayInfoList[index] && (
                 <Typography.Title
-                  level={4}
+                  level={5}
                   style={{
                     color: 'darkred',
                     textAlign: 'right',
-                    padding: '10px'
+                    padding: '10px',
+                    marginBottom: 0
                   }}>
                   提前还款 {preRepayInfoList[index].repayAmount} 元， 剩余本金 {preRepayInfoList[index].restAmount} 元
                 </Typography.Title>
