@@ -39,6 +39,19 @@ export const loanTypesMapping = {
   1: '等额本金'
 };
 
+export const preLoanTypes = [
+  {
+    key: 0,
+    label: `部分偿还`,
+    value: 0
+  },
+  {
+    key: 1,
+    label: `一次还清`,
+    value: 1
+  }
+];
+
 export const loanTypes = [
   {
     key: 0,
@@ -141,12 +154,23 @@ export const getLoanDetailTableColumns = () => {
   ];
 };
 
-export const getLoanDetailTableData = (): ILoanDetailElement[][] => {
+export const calculateLoanData = (formValue: IFormProps) => {
+  const loan = new Loan(formValue);
+  formValue.preRepayList.forEach((_, index) => {
+    loan.getDataBeforePreRepay(index);
+  });
+  return loan;
+};
+
+export type RestSeedList = { restAmount: number; repayAmount: number };
+
+export const getLoanDetailData = (
+  formValue: IFormProps
+): { loanDetailList: ILoanDetailElement[][]; restSeedList: PreRepayInfo[] } => {
+  const loan = calculateLoanData(formValue);
   let list: ILoanDetailElement[][] = [];
-  if (typeof window !== 'undefined') {
-    list = JSON.parse(sessionStorage.getItem('loan_detail_List') || '[]');
-  }
-  return list.map((it: ILoanDetailElement[], index: number): ILoanDetailElement[] => {
+  list = loan.loan_detail_List;
+  const loanDetailList = list.map((it: ILoanDetailElement[], index: number): ILoanDetailElement[] => {
     let prevLength = 0;
     if (Array.isArray(list[index - 1])) {
       for (let i = 0; i < index; i++) {
@@ -168,22 +192,13 @@ export const getLoanDetailTableData = (): ILoanDetailElement[][] => {
     }
     return it;
   });
+  const restSeedList = loan.rest_seed_list;
+  return { loanDetailList, restSeedList };
 };
 
-type preRepayInfo = {
+export type PreRepayInfo = {
   repayAmount: number;
   restAmount: number;
-};
-export const getPreRepayInfo = (): preRepayInfo[] => {
-  try {
-    if (typeof window !== 'undefined') {
-      return JSON.parse(sessionStorage.getItem('rest_seed_list') || '[]');
-    }
-    return [];
-  } catch (e) {
-    console.log(e);
-    return [];
-  }
 };
 
 export const getBeforePreRepayTableColumns = () => {

@@ -1,5 +1,5 @@
 import { IFormProps, PreRepayProps } from '@/components/SearchForm/SearchForm';
-import { element, ILoanDetailElement } from '@/contants';
+import { element, ILoanDetailElement, RestSeedList } from '@/contants';
 import dayjs from 'dayjs';
 import { calMonthAmount, calMonthObj, calTerm } from './utils';
 import currency from 'currency.js';
@@ -31,6 +31,8 @@ export class Loan {
   public termList: element[] = [];
   // 还贷款之前本息合计
   public totalList: element[] = [];
+  public loan_detail_List: ILoanDetailElement[][] = [];
+  public rest_seed_list: RestSeedList[] = [];
   constructor(formValue: IFormProps) {
     this.seed = formValue.loanAmount;
     this.term = formValue.loanYearTerm ? formValue.loanYearTerm * 12 : formValue.loanMonthTerm;
@@ -170,20 +172,13 @@ export class Loan {
         this.detailList
       );
     }
-
-    sessionStorage.setItem('loan_detail_List', JSON.stringify(this.detailList));
-
-    sessionStorage.setItem(
-      'rest_seed_list',
-      JSON.stringify(
-        this.restSeedList.map((it, index) => {
-          return {
-            restAmount: currency(it.after).value,
-            repayAmount: currency(this.preRepayList[index].prepayAmount).value
-          };
-        })
-      )
-    );
+    this.loan_detail_List = this.detailList;
+    this.rest_seed_list = this.restSeedList.map((it, index) => {
+      return {
+        restAmount: currency(it.after).value,
+        repayAmount: currency(this.preRepayList[index].prepayAmount).value
+      };
+    });
   }
 
   getTotalRepaidSeed(index: number) {

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { IFormProps } from '@/components/SearchForm/SearchForm';
-import { ILoanDetailElement, loanTypesMapping } from '@/contants';
+import { DateFormat, ILoanDetailElement } from '@/contants';
+import queryString from 'query-string';
 
 /**
  * 1、等额本金还款：月供=(借款金额/借款月数)+(借款金额-累计已还本金)×月利率;
@@ -44,7 +45,6 @@ export const calMonthObj = (
       restSeed
     });
   });
-  // sessionStorage.setItem('loan_detail_List', JSON.stringify(detailList));
   return {
     monthSeed,
     monthInterest,
@@ -58,17 +58,81 @@ export const calTerm = (seed: number, rates: number, monthAmount: number) => {
   return Math.log(monthAmount / (monthAmount - monthRates * seed)) / Math.log(1 + monthRates);
 };
 
-export const formatValue = (formValue: IFormProps) => {
-  const seed = (formValue.loanAmount || 0) * 10000;
-  const term = formValue.loanYearTerm ? formValue.loanYearTerm * 12 : formValue.loanMonthTerm;
-  const loanType = Reflect.get(loanTypesMapping, formValue.loanType || 0);
-  // const allInterestAndSeed = monthAmount * term;
-  // const allInterest = allInterestAndSeed - seed;
-  return {
-    seed,
-    term,
-    loanType
-    // allInterestAndSeed,
-    // allInterest,
+const setDefaultFormValue = (val: string) => {
+  return !isNaN(Number(val)) ? Number(val) : 0;
+};
+
+export const formValuesToQueryString = (values: IFormProps) => {
+  let qs = '';
+  const copyValues = { ...values, firstRepayDate: values.firstRepayDate.format(DateFormat.YM) };
+  Reflect.deleteProperty(copyValues, 'preRepayList');
+  qs += queryString.stringify(copyValues);
+  const preRepayList = values.preRepayList;
+  preRepayList.forEach((item) => {
+    const copyItem = { ...item, prepayDate: item.prepayDate.format(DateFormat.YM) };
+    qs += `&${queryString.stringify(copyItem)}`;
+  });
+  return qs;
+};
+
+export type RouterQueryProps = {
+  firstRepayDate: string;
+  loanAmount: string;
+  loanMonthTerm: string;
+  loanType: string;
+  loanYearTerm: string;
+  rates: string;
+  newMonthlyAmount: string[] | string;
+  newRates: string[] | string;
+  newRepayType: string[] | string;
+  preRepayType: string[] | string;
+  prepayAmount: string[] | string;
+  prepayDate: string[] | string;
+  repayPlan: string[] | string;
+};
+
+export const queryToFormValues = (query: RouterQueryProps): IFormProps => {
+  const result: IFormProps = {
+    loanAmount: setDefaultFormValue(query.loanAmount),
+    loanYearTerm: setDefaultFormValue(query.loanYearTerm),
+    loanMonthTerm: setDefaultFormValue(query.loanMonthTerm),
+    loanType: setDefaultFormValue(query.loanType),
+    rates: setDefaultFormValue(query.rates),
+    firstRepayDate: dayjs(query.firstRepayDate),
+    preRepayList: []
   };
+  let projectLength = 1;
+  if (
+    Array.isArray(query.prepayDate) ||
+    Array.isArray(query.prepayAmount) ||
+    Array.isArray(query.newRates) ||
+    Array.isArray(query.newRepayType) ||
+    Array.isArray(query.repayPlan) ||
+    Array.isArray(query.newMonthlyAmount) ||
+    Array.isArray(query.preRepayType)
+  ) {
+    projectLength = query.prepayDate.length;
+    Array.from(new Array(projectLength)).forEach((_, i) => {
+      result.preRepayList.push({
+        prepayDate: dayjs(query.prepayDate[i]),
+        prepayAmount: setDefaultFormValue(query.prepayAmount[i]),
+        newRates: setDefaultFormValue(query.newRates[i]),
+        newRepayType: setDefaultFormValue(query.newRepayType[i]),
+        repayPlan: setDefaultFormValue(query.repayPlan[i]),
+        newMonthlyAmount: setDefaultFormValue(query.newMonthlyAmount[i]),
+        preRepayType: setDefaultFormValue(query.preRepayType[i])
+      });
+    });
+  } else {
+    result.preRepayList.push({
+      prepayDate: dayjs(query.prepayDate),
+      prepayAmount: setDefaultFormValue(query.prepayAmount),
+      newRates: setDefaultFormValue(query.newRates),
+      newRepayType: setDefaultFormValue(query.newRepayType),
+      repayPlan: setDefaultFormValue(query.repayPlan),
+      newMonthlyAmount: setDefaultFormValue(query.newMonthlyAmount),
+      preRepayType: setDefaultFormValue(query.preRepayType)
+    });
+  }
+  return result;
 };

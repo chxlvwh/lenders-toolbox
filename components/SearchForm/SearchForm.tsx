@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, DatePicker, Divider, FloatButton, Form, Input, InputNumber, Select, Space, Tooltip } from 'antd';
-import { loanTermOptions, loanTypes, repayPlans } from '@/contants';
+import { loanTermOptions, loanTypes, preLoanTypes, repayPlans } from '@/contants';
 import dayjs from 'dayjs';
 import BeforePreRepayTable from '../PreRepay/BeforePreRepayTable';
 import PreRepayTable from '../PreRepay/PreRepayTable';
@@ -10,15 +10,19 @@ import HeaderPage from '../Header/HeaderPage';
 import HeaderDesc from '../Header/HeaderDesc';
 import Link from 'next/link';
 import styles from '@/styles/index.module.sass';
+import { useRouter } from 'next/router';
+import { getInitialValues } from '@/contants/initial-state';
+import { formValuesToQueryString, queryToFormValues, RouterQueryProps } from '@/utils/utils';
+import queryString from 'query-string';
 
 export type PreRepayProps = {
   prepayDate: dayjs.Dayjs;
-  prepayType: number;
   prepayAmount: number;
   newRates: number;
   newRepayType?: number;
   repayPlan?: number;
   newMonthlyAmount?: number;
+  preRepayType: number;
 };
 
 export interface IFormProps {
@@ -32,46 +36,8 @@ export interface IFormProps {
 }
 const SearchForm: React.FC = () => {
   const [form] = Form.useForm<IFormProps>();
-  const initialValues: IFormProps =
-    process.env.NODE_ENV === 'development'
-      ? {
-          loanAmount: 1190000,
-          loanYearTerm: 0,
-          loanMonthTerm: 360,
-          loanType: 0,
-          rates: 6.027,
-          firstRepayDate: dayjs('2019-10'),
-          preRepayList: [
-            {
-              prepayDate: dayjs('2023-05'),
-              prepayType: 0,
-              prepayAmount: 100000,
-              newRates: 6.027,
-              newRepayType: 0,
-              repayPlan: 0,
-              newMonthlyAmount: 7155.32
-            }
-          ]
-        }
-      : {
-          loanAmount: 0,
-          loanYearTerm: 0,
-          loanMonthTerm: 0,
-          loanType: 0,
-          rates: 0,
-          firstRepayDate: dayjs(),
-          preRepayList: [
-            {
-              prepayDate: dayjs(),
-              prepayType: 0,
-              prepayAmount: 0,
-              newRates: 0,
-              newRepayType: 0,
-              repayPlan: 0,
-              newMonthlyAmount: 0
-            }
-          ]
-        };
+  const router = useRouter();
+  const initialValues: IFormProps = getInitialValues();
   const [formValues, setFormValues] = useState<IFormProps>(initialValues);
   const onCheck = async () => {
     try {
@@ -85,12 +51,22 @@ const SearchForm: React.FC = () => {
         values.rates === 0
       )
         return;
+      await router.push(`${router.pathname}?${formValuesToQueryString(values)}`);
       setFormValues(values);
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
     }
   };
 
+  useEffect(() => {
+    if (router.query.prepayDate) {
+      const query = queryString.parse(queryString.stringify(router.query)) as RouterQueryProps;
+      // 计算数据
+      setFormValues(queryToFormValues(query));
+      // 控制页面中form值的显示
+      form.setFieldsValue(queryToFormValues(query));
+    }
+  }, [form, router.query]);
   return (
     <>
       <HeaderPage />
@@ -133,8 +109,8 @@ const SearchForm: React.FC = () => {
                     <Form.Item label="提前还款日期：" name={[field.name, 'prepayDate']}>
                       <DatePicker picker="month" />
                     </Form.Item>
-                    <Form.Item label="提前还款方式：" name={[field.name, 'prepayType']}>
-                      <Select options={loanTypes} />
+                    <Form.Item label="提前还款方式：" name={[field.name, 'preRepayType']}>
+                      <Select options={preLoanTypes} />
                     </Form.Item>
                     <Form.Item label="提前还款金额：" name={[field.name, 'prepayAmount']}>
                       <Input suffix="元" />
@@ -166,11 +142,10 @@ const SearchForm: React.FC = () => {
                   计算
                 </Button>
 
-                <Link href="/pre-repay/detail" target="_blank">
+                <Link href={`/pre-repay/detail?${queryString.stringify(router.query)}`} target="_blank">
                   <Button
                     size="large"
                     type="primary"
-                    onClick={onCheck}
                     block
                     danger
                     style={{
