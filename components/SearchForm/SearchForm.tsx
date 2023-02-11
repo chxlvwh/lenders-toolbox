@@ -11,7 +11,7 @@ import HeaderDesc from '../Header/HeaderDesc';
 import Link from 'next/link';
 import styles from '@/styles/index.module.sass';
 import { useRouter } from 'next/router';
-import { getInitialValues } from '@/contants/initial-state';
+import { getInitialValues } from '@/contants/initialState';
 import { formValuesToQueryString, queryToFormValues, RouterQueryProps } from '@/utils/utils';
 import queryString from 'query-string';
 
