@@ -10,7 +10,19 @@ const nextConfig = {
     return [
       {
         source: '/',
+        has: [
+          {
+            type: 'query',
+            key: 'clearCache',
+            value: 'true'
+          }
+        ],
         destination: '/pre-repay',
+        permanent: false
+      },
+      {
+        source: '/pre-repay',
+        destination: '/',
         permanent: false
       }
     ];
