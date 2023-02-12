@@ -215,12 +215,12 @@ const SearchForm: React.FC = () => {
                       name={[field.name, 'repayPlan']}>
                       <Select options={repayPlans} />
                     </Form.Item>
-                    <Form.Item
-                      className={styles['custom-form-item']}
-                      label="新的月供金额："
-                      name={[field.name, 'newMonthlyAmount']}>
-                      <Input suffix="元" />
-                    </Form.Item>
+                    {/*<Form.Item*/}
+                    {/*  className={styles['custom-form-item']}*/}
+                    {/*  label="新的月供金额："*/}
+                    {/*  name={[field.name, 'newMonthlyAmount']}>*/}
+                    {/*  <Input suffix="元" />*/}
+                    {/*</Form.Item>*/}
                   </Card>
 
                   <MinusCircleOutlined

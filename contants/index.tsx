@@ -44,12 +44,12 @@ export const preLoanTypes = [
     key: 0,
     label: `部分偿还`,
     value: 0
-  },
-  {
-    key: 1,
-    label: `一次还清`,
-    value: 1
   }
+  // {
+  //   key: 1,
+  //   label: `一次还清`,
+  //   value: 1
+  // }
 ];
 
 export const loanTypes = [
@@ -57,12 +57,12 @@ export const loanTypes = [
     key: 0,
     label: `等额本息`,
     value: 0
-  },
-  {
-    key: 1,
-    label: `等额本金`,
-    value: 1
   }
+  // {
+  //   key: 1,
+  //   label: `等额本金`,
+  //   value: 1
+  // }
 ];
 
 export const repayPlans = [
@@ -70,22 +70,22 @@ export const repayPlans = [
     key: 0,
     label: `月供基本不变`,
     value: 0
-  },
-  {
-    key: 1,
-    label: `还款期限不变`,
-    value: 1
-  },
-  {
-    key: 2,
-    label: `调整还款期限`,
-    value: 2
-  },
-  {
-    key: 3,
-    label: `调整月供金额`,
-    value: 3
   }
+  // {
+  //   key: 1,
+  //   label: `还款期限不变`,
+  //   value: 1
+  // },
+  // {
+  //   key: 2,
+  //   label: `调整还款期限`,
+  //   value: 2
+  // },
+  // {
+  //   key: 3,
+  //   label: `调整月供金额`,
+  //   value: 3
+  // }
 ];
 
 // ts-ignore
