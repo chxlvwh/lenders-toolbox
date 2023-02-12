@@ -12,7 +12,9 @@ import {
   Row,
   Select,
   Space,
-  Tooltip
+  Tooltip,
+  FormListOperation,
+  message
 } from 'antd';
 import {
   getAfterPreRepayTableData,
@@ -80,17 +82,20 @@ const SearchForm: React.FC = () => {
         return;
       await router.push(`${router.pathname}?${formValuesToQueryString(values)}`);
       setFormValues(values);
-      setBeforePreRepayTableData(getBeforePreRepayTableData(values));
-      const nextAfterData: LoanTableColumns[][] = [];
-      const nextPreData: LoanTableColumns[][] = [];
-      values.preRepayList.forEach((item, index) => {
-        nextAfterData.push(getAfterPreRepayTableData(values, index));
-        nextPreData.push(getPreRepayTableData(values, index));
-        // setAfterPreRepayTableData([...afterPreRepayTableData, getAfterPreRepayTableData(values, index)]);
-        // setPreRepayTableData([...preRepayTableData, getPreRepayTableData(values, index)]);
-      });
-      setAfterPreRepayTableData(nextAfterData);
-      setPreRepayTableData(nextPreData);
+      try {
+        setBeforePreRepayTableData(getBeforePreRepayTableData(values));
+        const nextAfterData: LoanTableColumns[][] = [];
+        const nextPreData: LoanTableColumns[][] = [];
+        values.preRepayList.forEach((item, index) => {
+          nextAfterData.push(getAfterPreRepayTableData(values, index));
+          nextPreData.push(getPreRepayTableData(values, index));
+        });
+        setAfterPreRepayTableData(nextAfterData);
+        setPreRepayTableData(nextPreData);
+      } catch (e) {
+        console.log(e);
+        message.error(e && e.message);
+      }
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
     }
@@ -103,6 +108,26 @@ const SearchForm: React.FC = () => {
       form.setFieldValue('loanMonthTerm', loanYearTerm * 12);
       console.log(loanYearTerm * 12);
     }
+  };
+
+  const handleAddProject = (add: FormListOperation['add']) => {
+    const preRepayList = form.getFieldValue('preRepayList');
+    const currentProjectLength = preRepayList.length;
+    const lastProject = preRepayList[currentProjectLength - 1];
+    add({ ...lastProject, prepayDate: lastProject.prepayDate.add(1, 'year') });
+  };
+
+  const getRepayList = () => {
+    return formValues.preRepayList.map((val, index) => {
+      return (
+        <div key={index}>
+          <Divider />
+          <PreRepayTable tableData={preRepayTableData[index]} formValues={formValues} index={index} />
+          <Divider />
+          <AfterPreRepayTable tableData={afterPreRepayTableData[index]} index={index} />
+        </div>
+      );
+    });
   };
 
   useEffect(() => {
@@ -215,11 +240,17 @@ const SearchForm: React.FC = () => {
                   </Col>
 
                   <Col className="gutter-row" span={12}>
-                    <Link href={`/pre-repay/detail?${queryString.stringify(router.query)}`} target="_blank">
-                      <Button size="large" type="primary" block danger>
+                    {afterPreRepayTableData.length ? (
+                      <Link href={`/pre-repay/detail?${queryString.stringify(router.query)}`} target="_blank">
+                        <Button size="large" type="primary" block danger>
+                          查看每月还款明细
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button size="large" type="primary" block danger disabled>
                         查看每月还款明细
                       </Button>
-                    </Link>
+                    )}
                   </Col>
                 </Row>
               </Form.Item>
@@ -229,7 +260,7 @@ const SearchForm: React.FC = () => {
                   shape="circle"
                   type="primary"
                   className={styles['float-btn-circle']}
-                  onClick={() => add(form.getFieldValue('preRepayList')[0])}
+                  onClick={() => handleAddProject(add)}
                   icon={<PlusOutlined />}
                 />
               </Tooltip>
@@ -237,18 +268,8 @@ const SearchForm: React.FC = () => {
           )}
         </Form.List>
       </Form>
-      {formValues.loanAmount !== 0 && <BeforePreRepayTable tableData={beforePreRepayTableData} />}
-      {formValues.loanAmount !== 0 &&
-        formValues.preRepayList.map((val, index) => {
-          return (
-            <div key={index}>
-              <Divider />
-              <PreRepayTable tableData={preRepayTableData[index]} formValues={formValues} index={index} />
-              <Divider />
-              <AfterPreRepayTable tableData={afterPreRepayTableData[index]} index={index} />
-            </div>
-          );
-        })}
+      {beforePreRepayTableData.length ? <BeforePreRepayTable tableData={beforePreRepayTableData} /> : null}
+      {afterPreRepayTableData.length ? getRepayList() : null}
     </>
   );
 };

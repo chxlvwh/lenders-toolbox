@@ -30,6 +30,9 @@ export const calMonthObj = (
   let monthInterest = 0;
   let restSeed = seed;
   let repaidInterest = 0;
+  if (repaidMonths < 0) {
+    throw new Error('日期填写不正确或者贷款还清后还有多余的还款计划');
+  }
   Array.from(new Array(repaidMonths)).forEach((item, i) => {
     const lastRestSeed = restSeed;
     restSeed = restSeed * (1 + monthRates) - monthAmount;
