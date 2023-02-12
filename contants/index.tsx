@@ -269,7 +269,7 @@ export const getBeforePreRepayTableColumns = () => {
 let loan: Loan;
 
 export const getBeforePreRepayTableData = (formValue: IFormProps): LoanTableColumns[] => {
-  loan = new Loan(formValue);
+  loan = calculateLoanData(formValue);
   const { seed, term, monthlyPayment, monthlyDecline, rates, type, total, totalInterest } = loan.getInitialData();
   const loanType = Reflect.get(loanTypesMapping, type);
   return [
@@ -317,12 +317,6 @@ export const getBeforePreRepayTableData = (formValue: IFormProps): LoanTableColu
 };
 
 export const getPreRepayTableData = (formValue: IFormProps, index: number): LoanTableColumns[] => {
-  try {
-    loan.getDataBeforePreRepay(index);
-  } catch (e) {
-    console.log(e);
-    return [];
-  }
   return [
     {
       key: '1',
@@ -369,12 +363,6 @@ export interface LoanTableColumns {
 }
 
 export const getAfterPreRepayTableData = (formValue: IFormProps, index: number): LoanTableColumns[] => {
-  try {
-    loan.getDataBeforePreRepay(index);
-  } catch (e) {
-    console.log(e);
-    return [];
-  }
   const loanType = Reflect.get(loanTypesMapping, formValue.loanType || 0);
   return [
     {
@@ -392,7 +380,7 @@ export const getAfterPreRepayTableData = (formValue: IFormProps, index: number):
     {
       key: '3',
       name: '贷款利率',
-      value: `${formValue.rates} %`
+      value: `${formValue.preRepayList[index].newRates} %`
     },
     {
       key: '4',

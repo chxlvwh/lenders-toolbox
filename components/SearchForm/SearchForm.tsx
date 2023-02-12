@@ -64,8 +64,8 @@ const SearchForm: React.FC = () => {
   const [formValues, setFormValues] = useState<IFormProps>(initialValues);
   const [disableTerm, setDisableTerm] = useState<boolean>(false);
   const [beforePreRepayTableData, setBeforePreRepayTableData] = useState<LoanTableColumns[]>([]);
-  const [afterPreRepayTableData, setAfterPreRepayTableData] = useState<LoanTableColumns[]>([]);
-  const [preRepayTableData, setPreRepayTableData] = useState<LoanTableColumns[]>([]);
+  const [afterPreRepayTableData, setAfterPreRepayTableData] = useState<LoanTableColumns[][]>([]);
+  const [preRepayTableData, setPreRepayTableData] = useState<LoanTableColumns[][]>([]);
   const onCheck = async () => {
     try {
       const values = await form.validateFields();
@@ -81,10 +81,16 @@ const SearchForm: React.FC = () => {
       await router.push(`${router.pathname}?${formValuesToQueryString(values)}`);
       setFormValues(values);
       setBeforePreRepayTableData(getBeforePreRepayTableData(values));
+      const nextAfterData: LoanTableColumns[][] = [];
+      const nextPreData: LoanTableColumns[][] = [];
       values.preRepayList.forEach((item, index) => {
-        setAfterPreRepayTableData(getAfterPreRepayTableData(values, index));
-        setPreRepayTableData(getPreRepayTableData(values, index));
+        nextAfterData.push(getAfterPreRepayTableData(values, index));
+        nextPreData.push(getPreRepayTableData(values, index));
+        // setAfterPreRepayTableData([...afterPreRepayTableData, getAfterPreRepayTableData(values, index)]);
+        // setPreRepayTableData([...preRepayTableData, getPreRepayTableData(values, index)]);
       });
+      setAfterPreRepayTableData(nextAfterData);
+      setPreRepayTableData(nextPreData);
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
     }
@@ -237,9 +243,9 @@ const SearchForm: React.FC = () => {
           return (
             <div key={index}>
               <Divider />
-              <PreRepayTable tableData={preRepayTableData} formValues={formValues} index={index} />
+              <PreRepayTable tableData={preRepayTableData[index]} formValues={formValues} index={index} />
               <Divider />
-              <AfterPreRepayTable tableData={afterPreRepayTableData} index={index} />
+              <AfterPreRepayTable tableData={afterPreRepayTableData[index]} index={index} />
             </div>
           );
         })}
