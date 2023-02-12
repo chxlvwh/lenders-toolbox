@@ -94,7 +94,7 @@ const SearchForm: React.FC = () => {
         setPreRepayTableData(nextPreData);
       } catch (e) {
         console.log(e);
-        message.error(e && e.message);
+        message.error('日期填写不正确或者贷款还清后还有多余的还款计划');
       }
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
