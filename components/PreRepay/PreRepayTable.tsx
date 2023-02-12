@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Typography } from 'antd';
-import { DateFormat, getBeforePreRepayTableColumns, getPreRepayTableData, LoanTableColumns } from '@/contants';
+import { DateFormat, getBeforePreRepayTableColumns, LoanTableColumns } from '@/contants';
 import { IFormProps } from '../SearchForm/SearchForm';
 
 const PreRepayTable = ({

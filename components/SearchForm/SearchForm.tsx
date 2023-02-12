@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -100,15 +100,15 @@ const SearchForm: React.FC = () => {
       console.log('Failed:', errorInfo);
     }
   };
-  const handleTermChange = async () => {
+  // eslint-disable-next-line no-undef
+  const handleTermChange = useCallback(async () => {
     const loanYearTerm = await form.getFieldValue('loanYearTerm');
     setDisableTerm(loanYearTerm !== 0);
     if (loanYearTerm !== 0) {
-      // setFormValues({ ...formValues, loanMonthTerm: loanYearTerm * 12 });
       form.setFieldValue('loanMonthTerm', loanYearTerm * 12);
       console.log(loanYearTerm * 12);
     }
-  };
+  }, [form]);
 
   const handleAddProject = (add: FormListOperation['add']) => {
     const preRepayList = form.getFieldValue('preRepayList');
@@ -139,7 +139,7 @@ const SearchForm: React.FC = () => {
       form.setFieldsValue(queryToFormValues(query));
     }
     handleTermChange();
-  }, [form, router.query]);
+  }, [form, handleTermChange, router.query]);
   return (
     <>
       <HeaderPage />
