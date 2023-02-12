@@ -11,7 +11,7 @@ const nextConfig = {
       {
         source: '/',
         destination: '/pre-repay',
-        permanent: true
+        permanent: false
       }
     ];
   }
