@@ -14,24 +14,55 @@ export type MonthlyData = {
 };
 
 export class Loan {
+  /*本金*/
   private readonly seed;
+  /*还款月数*/
   private readonly term;
+  /*还款类型：等额本息或者等额本金*/
   private readonly type;
+  /*第一次还款月份*/
   private readonly firstRepayDate;
+  /*提前还款之前利率*/
   private readonly rates;
+  /*还款计划列表*/
   private readonly preRepayList: PreRepayProps[];
+  /*每月还款的详情，二维数组，第一维是根据还款计划来划分，第二维是每次还款计划中每月的还款详情*/
   public detailList: ILoanDetailElement[][] = [];
+  /** 剩余利息对象数组
+   * @property before 本次提前还款前剩余利息
+   * @property after 本次提前还款后剩余利息
+   * */
   public restInterestList: element[] = [];
+  /*已还本金数组，每一项数据代表上次提前还款之后到这次提前还款之前所还的本金*/
   public repaidSeedList: number[] = [];
+  /** 剩余本金对象数组
+   * @property before 上次提前还款后剩余本金
+   * @property after 本次提前还款后剩余本金
+   * */
   public restSeedList: element[] = [];
+  /*已还利息数组，每一项数据代表上次提前还款之后到这次提前还款之前所还的利息*/
   public repaidInterestList: number[] = [];
-  // 存的是每次提前还完贷款之后的月供
+  /**
+   * 月供对象数组
+   * @property before 上次提前还款后月供
+   * @property after 本次提前还款后月供
+   */
   public monthlyPaymentList: element[] = [];
-  // 提前还贷之前的期数
+  /**
+   * 期数对象数组
+   * @property before 上次提前还款后剩余总期数
+   * @property after 本次提前还款后剩余总期数
+   */
   public termList: element[] = [];
-  // 还贷款之前本息合计
+  /**
+   * 本息合计对象数组
+   * @property before 上次提前还款后本息合计
+   * @property after 本次提前还款后本息合计
+   */
   public totalList: element[] = [];
+  /*每月还款明细*/
   public loan_detail_List: ILoanDetailElement[][] = [];
+  /*每次提前还款后剩余本金*/
   public rest_seed_list: RestSeedList[] = [];
   constructor(formValue: IFormProps) {
     this.seed = formValue.loanAmount;
@@ -40,14 +71,19 @@ export class Loan {
     this.firstRepayDate = formValue.firstRepayDate;
     this.rates = formValue.rates;
     this.preRepayList = formValue.preRepayList;
-    // this.restSeedList[0] = { before: this.seed, after: this.seed };
-    // this.termList[0] = this.term;
   }
 
+  /**
+   * 获取月利率
+   * @param rates 年利率
+   * */
   getMonthRates(rates: number) {
     return rates / 100 / 12;
   }
 
+  /**
+   *
+   */
   getMonthlyPayment(amount: number, rates: number, term: number, type: number): number {
     if (type === 0) {
       const basePower = Math.pow(1 + this.getMonthRates(rates), term);
@@ -60,6 +96,10 @@ export class Loan {
     return 0;
   }
 
+  /**
+   * @function
+   * 生成初始数据
+   * */
   getInitialData() {
     const monthlyPayment = this.getMonthlyPayment(this.seed, this.rates, this.term, this.type);
     const total = monthlyPayment * this.term;
@@ -75,6 +115,10 @@ export class Loan {
     };
   }
 
+  /**
+   * @function 获取数据
+   * @param preRepayIndex 第几次提前还款，从0次开始
+   */
   getDataBeforePreRepay(preRepayIndex: number) {
     // 本次提前还款数据
     const currentPreRepayValue = this.preRepayList[preRepayIndex];
@@ -86,24 +130,25 @@ export class Loan {
     if (currentRepaidTimes <= 0) {
       throw new Error('提前还款日期不对，请检查输入的日期');
     }
-    let // 本次提前还款后月供
+    let /** 本次提前还款后月供 */
       monthlyPaymentAfter: number,
-      // 上次提前还款后月供
+      /** 上次提前还款后月供 */
       monthlyPaymentBefore: number,
-      // 上次提前还款后第一个月份
+      /** 上次提前还款后第一个月份 */
       firstMonth: dayjs.Dayjs,
+      /** 上次提前还款后利率 */
       rates: number,
-      // 本次提前还款后剩余本金
+      /** 本次提前还款后剩余本金 */
       seedAfter: number,
-      // 上次提前还款后剩余本金
+      /** 上次提前还款后剩余本金 */
       seedBefore: number,
-      // 本次提前还款前总期数
+      /** 上次提前还款后剩余总期数 */
       termBefore: number,
-      // 本次提前还款后总期数
+      /** 本次提前还款后总期数 */
       termAfter: number,
-      // 上次提前还款后本息合计
+      /** 上次提前还款后本息合计 */
       totalBefore: number,
-      // 本次提前还款后本息合计
+      /** 本次提前还款后本息合计 */
       totalAfter: number;
     if (preRepayIndex === 0) {
       seedBefore = this.seed;
@@ -139,7 +184,6 @@ export class Loan {
     // 根据本次提前还款之后每月还款算出期数
     termAfter = Math.ceil(calTerm(seedAfter, currentPreRepayValue.newRates, monthlyPaymentBefore));
     // 根据期数算出还款后的每月还款值
-    // eslint-disable-next-line prefer-const
     monthlyPaymentAfter = calMonthAmount(seedAfter, currentPreRepayValue.newRates, termAfter);
     this.monthlyPaymentList[preRepayIndex] = {
       before: monthlyPaymentBefore,
