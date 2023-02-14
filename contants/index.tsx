@@ -5,6 +5,7 @@ import { Loan } from '@/utils/Loan';
 import styles from '@/styles/index.module.sass';
 
 export type element = { before: number; after: number };
+
 export interface ILoanDetailElement {
   key?: string | number;
   term: number;
@@ -34,11 +35,6 @@ export const loanTermOptions = Array.from(new Array(31).keys()).map((it) => {
   };
 });
 
-export const loanTypesMapping = {
-  0: '等额本息',
-  1: '等额本金'
-};
-
 export const preLoanTypes = [
   {
     key: 0,
@@ -52,30 +48,66 @@ export const preLoanTypes = [
   // }
 ];
 
+export enum LoanTypeEnum {
+  /** 等额本息 */
+  EQUAL_SEED_INTEREST,
+  /** 等额本金 */
+  EQUAL_SEED
+}
+
+const loanTypesMapping = {
+  [LoanTypeEnum.EQUAL_SEED_INTEREST]: '等额本息',
+  [LoanTypeEnum.EQUAL_SEED]: '等额本金'
+};
+
+/**
+ * @property 0 等额本息
+ * @property 1 等额本金
+ * */
+export type LoanType = (typeof LoanTypeEnum)[keyof typeof LoanTypeEnum];
+
 export const loanTypes = [
   {
-    key: 0,
-    label: `等额本息`,
-    value: 0
+    key: LoanTypeEnum.EQUAL_SEED_INTEREST,
+    label: loanTypesMapping[LoanTypeEnum.EQUAL_SEED_INTEREST],
+    value: LoanTypeEnum.EQUAL_SEED_INTEREST
+  },
+  {
+    key: LoanTypeEnum.EQUAL_SEED,
+    label: loanTypesMapping[LoanTypeEnum.EQUAL_SEED],
+    value: LoanTypeEnum.EQUAL_SEED
   }
-  // {
-  //   key: 1,
-  //   label: `等额本金`,
-  //   value: 1
-  // }
 ];
 
+export enum RepayPlanEnum {
+  /*月供基本不变*/
+  KEEP_MONTHLY_PAYMENT,
+  /*还款期限不变*/
+  KEEP_TERM
+  // /*调整还款期限*/
+  // ADJUST_MONTHLY_PAYMENT,
+  // /*调整月供金额*/
+  // ADJUST_TERM
+}
+
+/**
+ * @property 0 月供基本不变
+ * @property 1 还款期限不变
+ * @property 2 调整还款期限
+ * @property 3 调整月供金额
+ */
+export type RepayPlan = (typeof RepayPlanEnum)[keyof typeof RepayPlanEnum];
 export const repayPlans = [
   {
     key: 0,
     label: `月供基本不变`,
-    value: 0
+    value: RepayPlanEnum.KEEP_MONTHLY_PAYMENT
+  },
+  {
+    key: 1,
+    label: `还款期限不变`,
+    value: RepayPlanEnum.KEEP_TERM
   }
-  // {
-  //   key: 1,
-  //   label: `还款期限不变`,
-  //   value: 1
-  // }
   // {
   //   key: 2,
   //   label: `调整还款期限`,

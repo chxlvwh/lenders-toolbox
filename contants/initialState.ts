@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
+import { LoanTypeEnum, RepayPlanEnum } from '@/contants/index';
 
 const devInitState = {
   loanAmount: 1190000,
   loanYearTerm: 0,
   loanMonthTerm: 360,
-  loanType: 0,
+  loanType: LoanTypeEnum.EQUAL_SEED_INTEREST,
   rates: 6.027,
   firstRepayDate: dayjs('2019-10'),
   preRepayList: [
@@ -14,7 +15,7 @@ const devInitState = {
       prepayAmount: 100000,
       newRates: 6.027,
       newRepayType: 0,
-      repayPlan: 0,
+      repayPlan: RepayPlanEnum.KEEP_MONTHLY_PAYMENT,
       preRepayType: 0,
       newMonthlyAmount: 7155.32
     }
@@ -24,7 +25,7 @@ const prodInitState = {
   loanAmount: 0,
   loanYearTerm: 0,
   loanMonthTerm: 0,
-  loanType: 0,
+  loanType: LoanTypeEnum.EQUAL_SEED_INTEREST,
   rates: 0,
   firstRepayDate: dayjs(),
   preRepayList: [
@@ -34,7 +35,7 @@ const prodInitState = {
       prepayAmount: 0,
       newRates: 0,
       newRepayType: 0,
-      repayPlan: 0,
+      repayPlan: RepayPlanEnum.KEEP_MONTHLY_PAYMENT,
       preRepayType: 0,
       newMonthlyAmount: 0
     }

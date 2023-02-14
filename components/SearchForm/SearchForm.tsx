@@ -22,8 +22,10 @@ import {
   getPreRepayTableData,
   LoanTableColumns,
   loanTermOptions,
+  LoanType,
   loanTypes,
   preLoanTypes,
+  RepayPlan,
   repayPlans
 } from '@/contants';
 import dayjs from 'dayjs';
@@ -45,7 +47,7 @@ export type PreRepayProps = {
   prepayAmount: number;
   newRates: number;
   newRepayType?: number;
-  repayPlan?: number;
+  repayPlan: RepayPlan;
   newMonthlyAmount?: number;
   preRepayType: number;
 };
@@ -54,7 +56,7 @@ export interface IFormProps {
   loanAmount: number;
   loanYearTerm?: number;
   loanMonthTerm: number;
-  loanType?: number;
+  loanType: LoanType;
   rates: number;
   firstRepayDate: dayjs.Dayjs;
   preRepayList: PreRepayProps[];
