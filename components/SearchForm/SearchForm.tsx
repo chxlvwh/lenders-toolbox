@@ -180,42 +180,45 @@ const SearchForm: React.FC = () => {
                   align="baseline"
                   style={{ textAlign: 'left' }}
                   className={styles['custom-space']}>
-                  <Card title={`第${index + 1}次还款计划`} size="small">
+                  <Card
+                    title={`第${index + 1}次还款计划`}
+                    size="small"
+                    headStyle={{ background: 'rgba(25, 150, 100, 0.1)' }}>
                     <Form.Item
                       className={styles['custom-form-item']}
                       label="提前还款日期："
                       name={[field.name, 'prepayDate']}>
-                      <DatePicker picker="month" />
+                      <DatePicker picker="month" className={styles['custom-card-field']} />
                     </Form.Item>
                     <Form.Item
                       className={styles['custom-form-item']}
                       label="提前还款方式："
                       name={[field.name, 'preRepayType']}>
-                      <Select options={preLoanTypes} />
+                      <Select options={preLoanTypes} className={styles['custom-card-field']} />
                     </Form.Item>
                     <Form.Item
                       className={styles['custom-form-item']}
                       label="提前还款金额："
                       name={[field.name, 'prepayAmount']}>
-                      <Input suffix="元" />
+                      <Input suffix="元" className={styles['custom-card-field']} />
                     </Form.Item>
                     <Form.Item
                       className={styles['custom-form-item']}
                       label="新的贷款利率："
                       name={[field.name, 'newRates']}>
-                      <Input suffix="%" />
+                      <Input suffix="%" className={styles['custom-card-field']} />
                     </Form.Item>
                     <Form.Item
                       className={styles['custom-form-item']}
                       label="新的还款方式："
                       name={[field.name, 'newRepayType']}>
-                      <Select options={loanTypes} />
+                      <Select options={loanTypes} className={styles['custom-card-field']} />
                     </Form.Item>
                     <Form.Item
                       className={styles['custom-form-item']}
                       label="调整还款方案："
                       name={[field.name, 'repayPlan']}>
-                      <Select options={repayPlans} />
+                      <Select options={repayPlans} className={styles['custom-card-field']} />
                     </Form.Item>
                     {/*<Form.Item*/}
                     {/*  className={styles['custom-form-item']}*/}
