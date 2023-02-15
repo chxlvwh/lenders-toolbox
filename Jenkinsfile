@@ -9,6 +9,10 @@ cd /opt/lenders-toolbox
 git pull
 docker-compose build
 docker-compose up'''
+        sh '''cd /opt/lenders-toolbox
+git pull
+docker-compose build
+docker-compose up'''
       }
     }
 
