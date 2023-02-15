@@ -1,9 +1,10 @@
 pipeline {
   agent any
   stages {
-    stage('error') {
+    stage('test') {
       steps {
-        sh '''exit
+        sh '''pwd
+exit
 cd /opt/lenders-toolbox
 git pull
 docker-compose build
