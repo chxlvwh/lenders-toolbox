@@ -16,6 +16,15 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={styles.app}>
       <Component {...pageProps} />
+
+      <footer className={styles['bei-an']}>
+        <div>
+          <p>Copyright © 2023 HXCao, All Rights Reserved</p>
+          <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">
+            苏ICP备2023004702号
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

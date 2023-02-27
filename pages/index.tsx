@@ -19,6 +19,14 @@ export default function Home() {
           点击体验 &gt;&gt;
         </Link>
       </main>
+      <footer>
+        <div>
+          <p>Copyright © 2023 HXCao, All Rights Reserved</p>
+          <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">
+            苏ICP备2023004702号
+          </a>
+        </div>
+      </footer>
     </>
   );
 }
