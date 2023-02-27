@@ -8,4 +8,4 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - .:/lenders-toolbox
+      - /usr/app/lenders-toolbox:/var/lib/lenders-toolbox
